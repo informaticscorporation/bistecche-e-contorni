@@ -1,0 +1,162 @@
+.home {
+  width: 100%;
+  background-color: transparent;
+  font-family: "Inter", sans-serif;
+  padding: 16px;
+  color : white;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.cart-icon {
+  font-size: 24px;
+  color: red;
+  cursor: pointer;
+}
+
+.logo {
+  height: 50px;
+  object-fit: contain;
+}
+
+.spacer {
+  width: 24px;
+}
+
+/* Search */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #f3f3f3;
+  border-radius: 25px;
+  padding: 8px 16px;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Categories */
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.category {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  padding: 8px 14px;
+  background-color: white;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.category:hover {
+  background-color: red;
+  color: white;
+}
+
+.category.active {
+  background-color: red;
+  color: white;
+  border-color: red;
+}
+
+.category-icon {
+  font-size: 16px;
+}
+
+/* Products */
+.section {
+  margin-top: 24px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.section-header h2 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.section-header span {
+  font-size: 13px;
+  color: #fffbfb;
+  cursor: pointer;
+}
+
+.products {
+    width: 100%;
+    overflow-x: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+    padding-bottom: 8px;
+}
+
+.product-card {
+    width: 200px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+}
+
+.product-card img {
+  height: 90px;
+  margin-bottom: 12px;
+}
+
+.product-card h3 {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.desc {
+  color: #666;
+  font-size: 13px;
+}
+
+.price {
+  color: #e11d48;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 6px;
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+}
