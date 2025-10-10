@@ -13,6 +13,7 @@ export default function Home() {
     const fetchProducts = async () => {
       const { data } = await supabase.from("Prodotti").select("*");
       setProducts(data || []);
+      console.log(data);
     };
     fetchProducts();
   }, []);
@@ -119,10 +120,14 @@ export default function Home() {
           {selectedProducts.length > 0 ? (
             selectedProducts.map((product) => (
               <div className="product-card" key={product.id}>
-                <img
-                  src={product.immagine }
+                <div className="img-wrapper">
+                    
+                     <img
+                  src={product.immaggine }
                   alt={product.nome}
                 />
+                </div>
+               
                 <h3>{product.nome}</h3>
                 <p className="desc">{product.ingredienti}</p>
                <p className="price">€{Number(product.prezzo).toFixed(2)}</p>

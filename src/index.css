@@ -10,7 +10,7 @@ body {
   color: #333;
   line-height: 1.6;
  height: 100vh;
- 
+ overflow-x: hidden;
  background-color: black;
 }
 #root {

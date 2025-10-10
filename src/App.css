@@ -110,7 +110,9 @@
 
 .products {
     width: 100%;
-    overflow-x: auto;
+    height: 600px;
+    overflow-y: auto;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
@@ -118,7 +120,7 @@
 }
 
 .product-card {
-    width: 200px;
+    width: 180px;
   background-color: #fff;
   border-radius: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -130,6 +132,44 @@
 .product-card:hover {
   transform: translateY(-2px);
 }
+
+.img-container {
+    position: relative;
+}
+.ombrarossa {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    z-index: 1;
+    background: radial-gradient(circle, 
+        rgba(255, 255, 255, 1) 0%,   /* centro bianco */
+        rgba(255, 0, 0, 0.8) 40%,    /* rosso intenso */
+        rgba(255, 0, 0, 0.5) 70%,    /* rosso più chiaro */
+        rgba(255, 0, 0, 0.2) 100%    /* sfuma verso trasparente */
+    );
+}
+.img-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+
+
+.img-wrapper img {
+    position: relative;
+    z-index: 1; /* sopra l'effetto */
+    filter: 
+        drop-shadow(0 0 5px rgba(255,0,0,0.7))
+        drop-shadow(0 0 10px rgba(255,0,0,0.5))
+        drop-shadow(0 0 20px rgba(255,0,0,0.3));
+}
+
+
+
 
 .product-card img {
   height: 90px;
