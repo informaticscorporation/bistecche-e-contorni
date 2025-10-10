@@ -1,3 +1,6 @@
+/*componente Home*/
+
+
 .home {
   width: 100%;
   height: 100%;
@@ -195,3 +198,103 @@
   color: #777;
   font-size: 1rem;
 }
+
+/* componente Dashboard */
+.dashboard {
+  width: 100%;
+  min-height: 100vh;
+  padding: 2%;
+  background-color: #0d0d0d;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.section h2 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #ff5252;
+}
+
+/* Tabelle */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #1a1a1a;
+  color: white;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #333;
+  text-align: center;
+}
+
+th {
+  background-color: #222;
+  font-weight: bold;
+}
+
+/* Bottoni */
+button {
+  padding: 6px 10px;
+  margin: 0 3px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+}
+
+.btn-add {
+  background-color: green;
+}
+
+.btn-edit {
+  background-color: #ff9800;
+}
+
+.btn-save {
+  background-color: #2196f3;
+}
+
+.btn-delete {
+  background-color: red;
+}
+
+/* Form */
+.add-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.add-form input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #444;
+  background-color: #222;
+  color: white;
+  flex: 1;
+  min-width: 150px;
+}
+select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #444;
+  background-color: #222;
+  color: white;
+  flex: 1;
+  min-width: 150px;
+} 
