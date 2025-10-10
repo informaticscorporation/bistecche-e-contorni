@@ -7,6 +7,7 @@
   font-family: "Inter", sans-serif;
   color: white;
   overflow-y: hidden;
+  padding: 1%;
 }
 
 /* Header */
@@ -145,6 +146,7 @@
   padding: 5%;
   text-align: center;
   transition: transform 0.2s;
+  cursor: pointer;
 }
 
 .product-card:hover {
