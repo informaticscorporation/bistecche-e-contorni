@@ -120,7 +120,7 @@ export default function Home() {
             selectedProducts.map((product) => (
               <div className="product-card" key={product.id}>
                 <img
-                  src={product.immagine || "https://cdn-icons-png.flaticon.com/512/3075/3075977.png"}
+                  src={product.immagine }
                   alt={product.nome}
                 />
                 <h3>{product.nome}</h3>
