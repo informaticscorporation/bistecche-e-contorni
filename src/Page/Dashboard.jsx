@@ -145,47 +145,63 @@ export default function Dashboard() {
       <section className="section">
         <h2>Ordini</h2>
         <div className="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Cognome</th>
-                <th>Telefono</th>
-                <th>Ordine</th>
-                <th>Prezzo (€)</th>
-                <th>Data</th>
-                <th>Ora</th>
-                <th>Azioni</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ordini.length > 0 ? (
-                ordini.map((ordine) => (
-                  <tr key={ordine.id}>
-                    <td>{ordine.nome}</td>
-                    <td>{ordine.cognome}</td>
-                    <td>{ordine.telefono}</td>
-                    <td>{JSON.stringify(ordine.ordine)}</td>
-                    <td>{ordine.prezzo?.toFixed(2)}</td>
-                    <td>{ordine.data}</td>
-                    <td>{ordine.ora}</td>
-                    <td>
-                      <button
-                        className="btn-delete"
-                        onClick={() => handleDeleteOrdine(ordine.id)}
-                      >
-                        Elimina
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="8">Nessun ordine presente</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+        <table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Cognome</th>
+      <th>Telefono</th>
+      <th>Ordine</th>
+      <th>Domicilio</th>
+      <th>Provincia</th>
+      <th>Cap</th>
+      <th>Indirizzo</th>
+      <th>Prezzo (€)</th>
+      <th>Data</th>
+      <th>Ora</th>
+      <th>Azioni</th>
+    </tr>
+  </thead>
+  <tbody>
+    {ordini.length > 0 ? (
+      ordini.map((ordine) => (
+        <tr key={ordine.id}>
+          <td>{ordine.nome}</td>
+          <td>{ordine.cognome}</td>
+          <td>{ordine.telefono}</td>
+          <td>
+            {ordine.ordine.map((item, index) => (
+    <div key={item.id || index}>
+        {item.selectedQuantity} - {item.nome} - {item.giacotto ? "da cucinare✅" : "non da cucinare❌"}
+    </div>
+))}
+
+          </td>
+          <td>{ordine.domicilio ? "Si" : "No"}</td>
+          <td>{ordine.provincia}</td>
+          <td>{ordine.cap}</td>
+          <td>{ordine.indirizzo}</td>
+          <td>{ordine.prezzo?.toFixed(2)}</td>
+          <td>{ordine.data}</td>
+          <td>{ordine.ora}</td>
+          <td>
+            <button
+              className="btn-delete"
+              onClick={() => handleDeleteOrdine(ordine.id)}
+            >
+              Elimina
+            </button>
+          </td>
+        </tr>
+      ))
+    ) : (
+      <tr>
+        <td colSpan="8">Nessun ordine presente</td>
+      </tr>
+    )}
+  </tbody>
+</table>
+
         </div>
       </section>
 

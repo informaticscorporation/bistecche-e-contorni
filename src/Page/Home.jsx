@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { supabase } from "../supabaseClient";
 import { FaShoppingCart } from "react-icons/fa";
 import { GiNoodles, GiPig, GiCow, GiChicken, GiHamShank, GiCheeseWedge } from "react-icons/gi";
+import { useNavigate } from "react-router-dom";
 
-
-export default function Home() {
+export default function Home( { count }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState("involtini"); // categoria di default
-
+  const [categories, setCategories] = useState("involtini");
+  const [badge, setBadge] = useState(false); // categoria di default
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProducts = async () => {
       const { data } = await supabase.from("Prodotti").select("*");
@@ -17,6 +18,9 @@ export default function Home() {
     };
     fetchProducts();
   }, []);
+  useEffect(() => {
+    setBadge(count > 0);
+  }, [count]);
 
   // Filtri per categoria
   const Involtini = products.filter((product) => product.categoria === "involtini");
@@ -52,7 +56,8 @@ export default function Home() {
     <div className="home">
       {/* Header */}
       <div className="header">
-        <FaShoppingCart className="cart-icon" />
+        {badge && <div className="badge">{count}</div>}
+        <FaShoppingCart className="cart-icon" onClick={() => navigate("/carrello")} />
         <img src="/logo.webp" alt="Marina del Re" className="logo" />
         <div className="spacer" />
       </div>
@@ -131,6 +136,9 @@ export default function Home() {
                 <h3>{product.nome}</h3>
                 <p className="desc">{product.ingredienti}</p>
                <p className="price">€{Number(product.prezzo).toFixed(2)}</p>
+               <div>
+                <button className="btn-prodotto" onClick={() => navigate(`/prodotto/${product.id}`)}>Ordina</button>
+               </div>
 
               </div>
             ))
