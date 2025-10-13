@@ -200,7 +200,7 @@ export default function Dashboard() {
             <option value="">Seleziona Categoria</option>
             <option value="preparati">Preparati</option>
             <option value="suino">Suino</option>
-            <option value="manzo">Manzo</option>
+            <option value="bovino">Bovino</option>
             <option value="pollo">Pollo</option>
             <option value="salumi">Salumi</option>
             <option value="formaggi">Formaggi</option>
@@ -252,7 +252,7 @@ export default function Dashboard() {
                         <select value={editingProdotto.categoria} onChange={(e) => setEditingProdotto({ ...editingProdotto, categoria: e.target.value })}>
                           <option value="preparati">Preparati</option>
                           <option value="suino">Suino</option>
-                          <option value="manzo">Manzo</option>
+                          <option value="bovino">Bovino</option>
                           <option value="pollo">Pollo</option>
                           <option value="salumi">Salumi</option>
                           <option value="formaggi">Formaggi</option>

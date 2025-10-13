@@ -29,7 +29,7 @@ export default function Home({ count }) {
         .from("Prodotti")
         .select("*")
         .order("rating", { ascending: false })
-        .limit(5); // prende solo i top 5 per esempio
+        .limit(10); // prende solo i top 5 per esempio
       if (error) console.error("Errore caricamento prodotti popolari:", error);
       else setPopolari(data || []);
     };
@@ -125,10 +125,10 @@ export default function Home({ count }) {
           <GiPig className="category-icon" /> Suino
         </button>
         <button
-          className={`category ${categories === "manzo" ? "active" : ""}`}
-          onClick={() => setCategories("manzo")}
+          className={`category ${categories === "bovino" ? "active" : ""}`}
+          onClick={() => setCategories("bovino")}
         >
-          <GiCow className="category-icon" /> Manzo
+          <GiCow className="category-icon" /> Bovino
         </button>
         <button
           className={`category ${categories === "pollo" ? "active" : ""}`}
