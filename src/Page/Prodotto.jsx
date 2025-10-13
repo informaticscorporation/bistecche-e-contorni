@@ -29,40 +29,62 @@ export default function Prodotto({ selectedProduct, setSelectedProduct, count, s
     fetchProdotto();
   }, [id]);
 
-  // NON toccare prodotto.prezzo
-const handleAddToCart = () => {
-  if (!quantity) return;
+  // Calcolo prezzo in base al peso
+  const calculatePrice = () => {
+    if (!prodotto || !quantity) return 0;
 
-  const cart = Array.isArray(selectedProduct) ? [...selectedProduct] : [];
+    let basePricePerKg = Number(prodotto.prezzo);
+    if (giacotto) basePricePerKg += 4; // +4 €/kg se già cotto
 
-  const existingIndex = cart.findIndex(
-    (p) => p.id === prodotto.id && p.giacotto === giacotto
-  );
+    let kg = 0;
 
-  if (existingIndex !== -1) {
-    cart[existingIndex] = {
-      ...cart[existingIndex],
-      selectedQuantity: quantity,
-      selectedUnit: unit,
-    };
-  } else {
-    cart.push({
-      ...prodotto,
-      selectedQuantity: quantity,
-      selectedUnit: unit,
-      giacotto: giacotto, // solo flag, non prezzo
-    });
-    setCount(count + 1);
-  }
+    // Conversione quantità in kg
+    if (unit === "g") {
+      kg = parseFloat(quantity.replace("g", "")) / 1000;
+    } else if (unit === "kg") {
+      kg = parseFloat(quantity.replace("kg", ""));
+    }
 
-  setSelectedProduct(cart);
-  setShowPopup(true);
-};
+    const totalPrice = basePricePerKg * kg;
+    return totalPrice;
+  };
 
+  const totalPrice = calculatePrice();
+
+  const handleAddToCart = () => {
+    if (!quantity) return;
+
+    const cart = Array.isArray(selectedProduct) ? [...selectedProduct] : [];
+
+    const existingIndex = cart.findIndex(
+      (p) => p.id === prodotto.id && p.giacotto === giacotto
+    );
+
+    if (existingIndex !== -1) {
+      cart[existingIndex] = {
+        ...cart[existingIndex],
+        selectedQuantity: quantity,
+        selectedUnit: unit,
+        totalPrice: totalPrice.toFixed(2),
+      };
+    } else {
+      cart.push({
+        ...prodotto,
+        selectedQuantity: quantity,
+        selectedUnit: unit,
+        giacotto: giacotto,
+        totalPrice: totalPrice.toFixed(2),
+      });
+      setCount(count + 1);
+    }
+
+    setSelectedProduct(cart);
+    setShowPopup(true);
+  };
 
   const options =
     unit === "g"
-      ? ["100g", "200g", "300g", "400g"]
+      ? ["100g", "200g", "300g", "400g", "500g"]
       : ["0.25kg", "0.5kg", "0.75kg", "1kg"];
 
   if (!prodotto) return <div>Loading...</div>;
@@ -77,11 +99,13 @@ const handleAddToCart = () => {
       <img src={prodotto.immaggine} alt={prodotto.nome} />
       <h1>{prodotto.nome}</h1>
       <p>{prodotto.ingredienti}</p>
+
       <p>
-        Prezzo: €
+        Prezzo base: €
         {giacotto
           ? (Number(prodotto.prezzo) + 4).toFixed(2)
-          : Number(prodotto.prezzo).toFixed(2)}
+          : Number(prodotto.prezzo).toFixed(2)}{" "}
+        /kg
       </p>
 
       <div className="unit-selection">
@@ -91,7 +115,10 @@ const handleAddToCart = () => {
             name="unit"
             value="g"
             checked={unit === "g"}
-            onChange={() => setUnit("g")}
+            onChange={() => {
+              setUnit("g");
+              setQuantity("");
+            }}
           />
           Grammi
         </label>
@@ -101,7 +128,10 @@ const handleAddToCart = () => {
             name="unit"
             value="kg"
             checked={unit === "kg"}
-            onChange={() => setUnit("kg")}
+            onChange={() => {
+              setUnit("kg");
+              setQuantity("");
+            }}
           />
           Chilogrammi
         </label>
@@ -123,9 +153,15 @@ const handleAddToCart = () => {
             checked={giacotto}
             onChange={(e) => setGiacotto(e.target.checked)}
           />
-          Già cotto (+4€)
+          Già cotto (+4€/kg)
         </label>
       </div>
+
+      {quantity && (
+        <p>
+          Totale: <strong>€{totalPrice.toFixed(2)}</strong>
+        </p>
+      )}
 
       <button className="btn-prodotto" onClick={handleAddToCart} disabled={!quantity}>
         Aggiungi al carrello
@@ -134,12 +170,15 @@ const handleAddToCart = () => {
       {showPopup && (
         <div className="popup">
           <p>Prodotto aggiunto al carrello!</p>
-          <button className="btn-prodotto" onClick={() => navigate("/")}>
+          <div className="popup-buttons">
+             <button className="btn-prodotto" onClick={() => navigate(-1)}>
             Torna alla Home
           </button>
           <button className="btn-prodotto" onClick={() => navigate("/carrello")}>
             Vai al Carrello
           </button>
+          </div>
+         
         </div>
       )}
     </div>

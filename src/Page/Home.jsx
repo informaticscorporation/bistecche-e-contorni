@@ -1,63 +1,101 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
-import { FaShoppingCart } from "react-icons/fa";
-import { GiNoodles, GiPig, GiCow, GiChicken, GiHamShank, GiCheeseWedge } from "react-icons/gi";
+import { FaShoppingCart, FaRegStar, FaStar } from "react-icons/fa";
+import {
+  GiNoodles,
+  GiPig,
+  GiCow,
+  GiChicken,
+  GiHamShank,
+  GiCheeseWedge,
+  GiForkKnifeSpoon,
+  GiWineBottle
+} from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 
-export default function Home( { count }) {
+export default function Home({ count }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState("involtini");
-  const [badge, setBadge] = useState(false); // categoria di default
+  const [categories, setCategories] = useState("gastronomia");
+  const [badge, setBadge] = useState(false);
+  const [ratedProducts, setRatedProducts] = useState([]);
+  const [popolari, setPopolari] = useState([]);
   const navigate = useNavigate();
+
+  // 🔹 Caricamento prodotti popolari
+  useEffect(() => {
+    const fetchPopolari = async () => {
+      const { data, error } = await supabase
+        .from("Prodotti")
+        .select("*")
+        .order("rating", { ascending: false })
+        .limit(5); // prende solo i top 5 per esempio
+      if (error) console.error("Errore caricamento prodotti popolari:", error);
+      else setPopolari(data || []);
+    };
+    setInterval(() => {
+      fetchPopolari();
+    }, 5000);
+    clearInterval();
+  }, []);
+
+  // 🔹 Caricamento prodotti
   useEffect(() => {
     const fetchProducts = async () => {
-      const { data } = await supabase.from("Prodotti").select("*");
-      setProducts(data || []);
-      console.log(data);
+      const { data, error } = await supabase.from("Prodotti").select("*");
+      if (error) console.error("Errore caricamento prodotti:", error);
+      else setProducts(data || []);
     };
     fetchProducts();
   }, []);
+
   useEffect(() => {
     setBadge(count > 0);
   }, [count]);
 
-  // Filtri per categoria
-  const Involtini = products.filter((product) => product.categoria === "involtini");
-  const Suino = products.filter((product) => product.categoria === "suino");
-  const Manzo = products.filter((product) => product.categoria === "manzo");
-  const Pollo = products.filter((product) => product.categoria === "pollo");
-  const Salumi = products.filter((product) => product.categoria === "salumi");
-  const Formaggi = products.filter((product) => product.categoria === "formaggi");
+  // 🔎 Ricerca globale
+  const SearchResults = products.filter(
+    (p) =>
+      p.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.ingredienti?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  // Funzione per ottenere i prodotti della categoria selezionata
-  const getSelectedCategoryProducts = () => {
-    switch (categories) {
-      case "involtini":
-        return Involtini;
-      case "suino":
-        return Suino;
-      case "manzo":
-        return Manzo;
-      case "pollo":
-        return Pollo;
-      case "salumi":
-        return Salumi;
-      case "formaggi":
-        return Formaggi;
-      default:
-        return [];
+  // 🔄 Filtra per categoria
+  const getSelectedCategoryProducts = () =>
+    products.filter((p) => p.categoria === categories);
+
+  // 🔄 Se l’utente scrive qualcosa, mostriamo i risultati della ricerca
+  const selectedProducts =
+    searchTerm.trim().length > 0 ? SearchResults : getSelectedCategoryProducts();
+
+  // ⭐ Funzione per aggiungere un voto
+  const handleRate = async (productId, currentRating) => {
+    if (ratedProducts.includes(productId)) return;
+    const newRating = (currentRating || 0) + 1;
+    const { error } = await supabase
+      .from("Prodotti")
+      .update({ rating: newRating })
+      .eq("id", productId);
+
+    if (!error) {
+      setProducts((prev) =>
+        prev.map((p) =>
+          p.id === productId ? { ...p, rating: newRating } : p
+        )
+      );
+      setRatedProducts((prev) => [...prev, productId]);
     }
   };
-
-  const selectedProducts = getSelectedCategoryProducts();
 
   return (
     <div className="home">
       {/* Header */}
       <div className="header">
         {badge && <div className="badge">{count}</div>}
-        <FaShoppingCart className="cart-icon" onClick={() => navigate("/carrello")} />
+        <FaShoppingCart
+          className="cart-icon"
+          onClick={() => navigate("/carrello")}
+        />
         <img src="/logo.webp" alt="Marina del Re" className="logo" />
         <div className="spacer" />
       </div>
@@ -75,10 +113,10 @@ export default function Home( { count }) {
       {/* Categories */}
       <div className="categories">
         <button
-          className={`category ${categories === "involtini" ? "active" : ""}`}
-          onClick={() => setCategories("involtini")}
+          className={`category ${categories === "preparati" ? "active" : ""}`}
+          onClick={() => setCategories("preparati")}
         >
-          <GiNoodles className="category-icon" /> Involtino
+          <GiNoodles className="category-icon" /> Preparati
         </button>
         <button
           className={`category ${categories === "suino" ? "active" : ""}`}
@@ -110,38 +148,105 @@ export default function Home( { count }) {
         >
           <GiCheeseWedge className="category-icon" /> Formaggi
         </button>
+        <button
+          className={`category ${
+            categories === "gastronomia" ? "active" : ""
+          }`}
+          onClick={() => setCategories("gastronomia")}
+        >
+          <GiForkKnifeSpoon className="category-icon" /> Gastronomia e Contorni
+        </button>
+        <button
+          className={`category ${categories === "vini" ? "active" : ""}`}
+          onClick={() => setCategories("vini")}
+        >
+          <GiWineBottle className="category-icon" /> Vini
+        </button>
       </div>
 
-      {/* Prodotti per categoria selezionata */}
+      {/* Sezione Più Popolari */}
+      <div className="section">
+        <div className="section-header">
+          <h2>Più Popolari</h2>
+        </div>
+        <div className="popular-products">
+          {popolari.map((product) => {
+            const isRated = ratedProducts.includes(product.id);
+            return (
+              <div className="product-card-popular" key={product.id}>
+                <div className="img-wrapper">
+                  <img src={product.immaggine} alt={product.nome} />
+                  <div
+                    className="star-icon"
+                    onClick={() => handleRate(product.id, product.rating)}
+                  >
+                    {isRated ? (
+                      <FaStar className="star filled" />
+                    ) : (
+                      <FaRegStar className="star empty" />
+                    )}
+                  </div>
+                </div>
+                <h3 className="name">{product.nome}</h3>
+               
+                <p className="price">€{Number(product.prezzo).toFixed(2)}</p>
+                <div>
+                  <button
+                    className="btn-prodotto"
+                    onClick={() => navigate(`/prodotto/${product.id}`)}
+                  >
+                    Ordina
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Prodotti per categoria o ricerca */}
       <div className="section">
         <div className="section-header">
           <h2>
-            {categories.charAt(0).toUpperCase() + categories.slice(1)}
+            {searchTerm.trim().length > 0
+              ? `Risultati per "${searchTerm}"`
+              : categories.charAt(0).toUpperCase() + categories.slice(1)}
           </h2>
           <span>Vedi Tutto →</span>
         </div>
-
         <div className="products">
           {selectedProducts.length > 0 ? (
-            selectedProducts.map((product) => (
-              <div className="product-card" key={product.id}>
-                <div className="img-wrapper">
-                    
-                     <img
-                  src={product.immaggine }
-                  alt={product.nome}
-                />
+            selectedProducts.map((product) => {
+              const isRated = ratedProducts.includes(product.id);
+              return (
+                <div className="product-card" key={product.id}>
+                  <div className="img-wrapper">
+                    <img src={product.immaggine} alt={product.nome} />
+                    <div
+                      className="star-icon"
+                      onClick={() => handleRate(product.id, product.rating)}
+                    >
+                      {isRated ? (
+                        <FaStar className="star filled" />
+                      ) : (
+                        <FaRegStar className="star empty" />
+                      )}
+                    </div>
+                  </div>
+                  <h3>{product.nome}</h3>
+                  <p className="desc">{product.ingredienti}</p>
+                  <p className="price">€{Number(product.prezzo).toFixed(2)}</p>
+                  <div>
+                    <button
+                      className="btn-prodotto"
+                      onClick={() => navigate(`/prodotto/${product.id}`)}
+                    >
+                      Ordina
+                    </button>
+                  </div>
                 </div>
-               
-                <h3>{product.nome}</h3>
-                <p className="desc">{product.ingredienti}</p>
-               <p className="price">€{Number(product.prezzo).toFixed(2)}</p>
-               <div>
-                <button className="btn-prodotto" onClick={() => navigate(`/prodotto/${product.id}`)}>Ordina</button>
-               </div>
-
-              </div>
-            ))
+              );
+            })
           ) : (
             <p className="no-results">Nessun prodotto trovato</p>
           )}
