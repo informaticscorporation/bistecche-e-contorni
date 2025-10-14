@@ -31,33 +31,38 @@ export default function Carrello({ selectedProduct, setSelectedProduct, count, s
   };
 
   // 🔹 Calcolo prezzo (considera prodotti già cotti)
-  const calcolaPrezzo = (p) => {
-    let quantity = 1;
-    const prezzoBase = parseFloat(p.prezzo) || 0;
+ // 🔹 Calcolo prezzo aggiornato
+const calcolaPrezzo = (p) => {
+  // Se esiste il prezzo già calcolato dal componente Prodotto, lo usiamo
+  if (p.totalPrice) return parseFloat(p.totalPrice);
 
-    // Conversione quantità
-    if (typeof p.selectedQuantity === "string") {
-      if (p.selectedQuantity.includes("kg")) {
-        quantity = parseFloat(p.selectedQuantity.replace("kg", "").trim()) || 0;
-      } else if (p.selectedQuantity.includes("g")) {
-        quantity = (parseFloat(p.selectedQuantity.replace("g", "").trim()) || 0) / 1000;
-      } else {
-        quantity = parseFloat(p.selectedQuantity.trim()) || 1;
-      }
-    } else if (typeof p.selectedQuantity === "number") {
-      quantity = p.selectedQuantity;
+  let quantity = 1;
+  const prezzoBase = parseFloat(p.prezzo) || 0;
+
+  // Conversione quantità
+  if (typeof p.selectedQuantity === "string") {
+    if (p.selectedQuantity.includes("kg")) {
+      quantity = parseFloat(p.selectedQuantity.replace("kg", "").trim()) || 0;
+    } else if (p.selectedQuantity.includes("g")) {
+      quantity = (parseFloat(p.selectedQuantity.replace("g", "").trim()) || 0) / 1000;
+    } else {
+      quantity = parseFloat(p.selectedQuantity.trim()) || 1;
     }
+  } else if (typeof p.selectedQuantity === "number") {
+    quantity = p.selectedQuantity;
+  }
 
-    // ✅ Prezzo base per quantità
-    let prezzoTot = prezzoBase * quantity;
+  // Prezzo base per quantità
+  let prezzoTot = prezzoBase * quantity;
 
-    // ✅ Applica +4€/kg SOLO se non è già cotto di base
-    if (p.giacotto && !p.cotto) {
-      prezzoTot += 4 * quantity;
-    }
+  // Applica +4€/kg SOLO se non è già cotto di base
+  if (p.giacotto && !p.cotto) {
+    prezzoTot += 4 * quantity;
+  }
 
-    return prezzoTot;
-  };
+  return prezzoTot;
+};
+
 
   const prezzoTotale = ordine.reduce((acc, p) => acc + calcolaPrezzo(p), 0);
 
