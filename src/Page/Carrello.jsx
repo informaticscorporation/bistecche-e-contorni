@@ -23,26 +23,45 @@ export default function Carrello({ selectedProduct, setSelectedProduct, count, s
 
   const ordine = Array.isArray(selectedProduct) ? selectedProduct : [];
 
-  // 🔹 Funzione per rimuovere un prodotto dal carrello
+  // 🔹 Rimuovi prodotto
   const rimuoviProdotto = (index) => {
     const nuovoOrdine = ordine.filter((_, i) => i !== index);
     setSelectedProduct(nuovoOrdine);
     setCount(nuovoOrdine.length);
   };
 
-  // 🔹 Calcolo prezzo per prodotto con gestione "già cotto"
+  // 🔹 Calcolo prezzo (considera prodotti già cotti)
   const calcolaPrezzo = (p) => {
-    let quantity = 0;
-    if (p.selectedUnit === "g") quantity = parseFloat(p.selectedQuantity.replace("g", "")) / 1000;
-    else if (p.selectedUnit === "kg") quantity = parseFloat(p.selectedQuantity.replace("kg", ""));
+    let quantity = 1;
+    const prezzoBase = parseFloat(p.prezzo) || 0;
 
-    const prezzoBase = Number(p.prezzo);
-    // +4€ al kilo se già cotto
-    return prezzoBase * quantity + (p.giacotto ? quantity * 4 : 0);
+    // Conversione quantità
+    if (typeof p.selectedQuantity === "string") {
+      if (p.selectedQuantity.includes("kg")) {
+        quantity = parseFloat(p.selectedQuantity.replace("kg", "").trim()) || 0;
+      } else if (p.selectedQuantity.includes("g")) {
+        quantity = (parseFloat(p.selectedQuantity.replace("g", "").trim()) || 0) / 1000;
+      } else {
+        quantity = parseFloat(p.selectedQuantity.trim()) || 1;
+      }
+    } else if (typeof p.selectedQuantity === "number") {
+      quantity = p.selectedQuantity;
+    }
+
+    // ✅ Prezzo base per quantità
+    let prezzoTot = prezzoBase * quantity;
+
+    // ✅ Applica +4€/kg SOLO se non è già cotto di base
+    if (p.giacotto && !p.cotto) {
+      prezzoTot += 4 * quantity;
+    }
+
+    return prezzoTot;
   };
 
   const prezzoTotale = ordine.reduce((acc, p) => acc + calcolaPrezzo(p), 0);
 
+  // 🔹 Salvataggio ordine su Supabase
   const confermaOrdine = async () => {
     const newOrder = {
       nome,
@@ -72,105 +91,98 @@ export default function Carrello({ selectedProduct, setSelectedProduct, count, s
     }
   };
 
+  // 🔹 Download PDF ordine
   const downloadPDF = () => {
-  const doc = new jsPDF();
-  const pageWidth = doc.internal.pageSize.getWidth();
-  let y = 20;
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let y = 20;
 
-  // Sfondo nero
-  doc.setFillColor(0, 0, 0);
-  doc.rect(0, 0, pageWidth, doc.internal.pageSize.getHeight(), "F");
+    doc.setFillColor(0, 0, 0);
+    doc.rect(0, 0, pageWidth, doc.internal.pageSize.getHeight(), "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
 
-  // Testo bianco
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(16);
+    const img = new Image();
+    img.src = "/logo.webp";
+    img.onload = () => {
+      const logoWidth = 40;
+      const logoHeight = (img.height / img.width) * logoWidth;
+      doc.addImage(img, "WEBP", (pageWidth - logoWidth) / 2, 10, logoWidth, logoHeight);
+      y = 10 + logoHeight + 10;
 
-  // Logo
-  const img = new Image();
-  img.src = "/logo.webp";
-  img.onload = () => {
-    const logoWidth = 40;
-    const logoHeight = (img.height / img.width) * logoWidth;
-    doc.addImage(img, "WEBP", (pageWidth - logoWidth) / 2, 10, logoWidth, logoHeight);
-    y = 10 + logoHeight + 10;
+      doc.setFontSize(18);
+      doc.text("Conferma Ordine", pageWidth / 2, y, { align: "center" });
+      y += 15;
 
-    // Titolo
-    doc.setFontSize(18);
-    doc.text("Conferma Ordine", pageWidth / 2, y, { align: "center" });
-    y += 15;
-
-    doc.setFontSize(12);
-
-    // ===== Sezione Cliente =====
-    doc.setFont(undefined, "bold");
-    doc.text("Dati Cliente:", 20, y);
-    doc.setFont(undefined, "normal");
-    y += 8;
-    doc.text(`Nome: ${nome}`, 20, y); y += 8;
-    doc.text(`Cognome: ${cognome}`, 20, y); y += 8;
-    doc.text(`Telefono: ${telefono}`, 20, y); y += 12;
-
-    // ===== Sezione Consegna =====
-    if (domicilio) {
+      doc.setFontSize(12);
       doc.setFont(undefined, "bold");
-      doc.text("Dettagli Consegna:", 20, y);
+      doc.text("Dati Cliente:", 20, y);
       doc.setFont(undefined, "normal");
       y += 8;
-      doc.text(`Indirizzo: ${indirizzo}`, 20, y); y += 8;
-      doc.text(`Provincia: ${provincia}`, 20, y); y += 8;
-      doc.text(`CAP: ${cap}`, 20, y); y += 8;
-      doc.text(`Variazione prezzo domicilio: 1-5 €`, 20, y); y += 12;
-    }
+      doc.text(`Nome: ${nome}`, 20, y); y += 8;
+      doc.text(`Cognome: ${cognome}`, 20, y); y += 8;
+      doc.text(`Telefono: ${telefono}`, 20, y); y += 12;
 
-    // ===== Sezione Prodotti =====
-    doc.setFont(undefined, "bold");
-    doc.text("Prodotti:", 20, y);
-    y += 8;
-    doc.setFont(undefined, "normal");
-
-    ordinePDF.forEach((p) => {
-      const prezzoProdotto = calcolaPrezzo(p);
-      doc.text(`• ${p.nome}`, 20, y); y += 7;
-      doc.text(`  Quantità: ${p.selectedQuantity} ${p.selectedUnit}`, 22, y); y += 7;
-      if (p.giacotto) {
-        doc.text(`  Già cotto: +4€`, 22, y); y += 7;
+      if (domicilio) {
+        doc.setFont(undefined, "bold");
+        doc.text("Consegna a Domicilio:", 20, y);
+        doc.setFont(undefined, "normal");
+        y += 8;
+        doc.text(`Indirizzo: ${indirizzo}`, 20, y); y += 8;
+        doc.text(`Provincia: ${provincia}`, 20, y); y += 8;
+        doc.text(`CAP: ${cap}`, 20, y); y += 12;
       }
-      doc.text(`  Prezzo: €${prezzoProdotto.toFixed(2)}`, 22, y); y += 10;
 
-      if (y > 270) {
-        doc.addPage();
-        doc.setFillColor(0, 0, 0);
-        doc.rect(0, 0, pageWidth, doc.internal.pageSize.getHeight(), "F");
-        doc.setTextColor(255, 255, 255);
-        y = 20;
-      }
-    });
+      doc.setFont(undefined, "bold");
+      doc.text("Prodotti:", 20, y);
+      doc.setFont(undefined, "normal");
+      y += 8;
 
-    // ===== Totale =====
-    doc.setFont(undefined, "bold");
-    doc.text(`Prezzo Totale: €${prezzoTotale.toFixed(2)}`, 20, y); y += 12;
+      ordinePDF.forEach((p) => {
+        const prezzoProdotto = calcolaPrezzo(p);
+        doc.text(`• ${p.nome}`, 20, y); y += 7;
+        doc.text(`  Quantità: ${p.selectedQuantity || "1"}`, 22, y); y += 7;
+        doc.text(`  Unità: ${p.selectedUnit || "-"}`, 22, y); y += 7;
 
-    // ===== Data e ora =====
-    doc.setFont(undefined, "normal");
-    doc.text(`Data ordine: ${data}`, 20, y); y += 7;
-    doc.text(`Ora ordine: ${ora}`, 20, y); y += 7;
+        if (p.cotto) {
+          doc.text(`  Prodotto già cotto di base`, 22, y);
+          y += 7;
+        } else if (p.giacotto) {
+          doc.text(`  Già cotto (+4€/kg)`, 22, y);
+          y += 7;
+        }
 
-    // Scarica PDF
-    const pdfBlob = doc.output("blob");
-    const blobUrl = URL.createObjectURL(pdfBlob);
-    const a = document.createElement("a");
-    a.href = blobUrl;
-    a.download = "Conferma_Ordine.pdf";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+        doc.text(`  Prezzo: €${prezzoProdotto.toFixed(2)}`, 22, y); y += 10;
 
-    setSelectedProduct([]);
-    setCount(0);
-    setPdfPopup(false);
+        if (y > 270) {
+          doc.addPage();
+          doc.setFillColor(0, 0, 0);
+          doc.rect(0, 0, pageWidth, doc.internal.pageSize.getHeight(), "F");
+          doc.setTextColor(255, 255, 255);
+          y = 20;
+        }
+      });
+
+      doc.setFont(undefined, "bold");
+      doc.text(`Totale Ordine: €${prezzoTotale.toFixed(2)}`, 20, y); y += 10;
+      doc.setFont(undefined, "normal");
+      doc.text(`Data: ${data}`, 20, y); y += 7;
+      doc.text(`Ora: ${ora}`, 20, y); y += 7;
+
+      const pdfBlob = doc.output("blob");
+      const blobUrl = URL.createObjectURL(pdfBlob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = "Conferma_Ordine.pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      setSelectedProduct([]);
+      setCount(0);
+      setPdfPopup(false);
+    };
   };
-};
-
 
   if (!ordine.length && !pdfPopup) {
     return (
@@ -190,30 +202,34 @@ export default function Carrello({ selectedProduct, setSelectedProduct, count, s
       </div>
 
       <h1>Carrello</h1>
-       <div className="carrello-wrapper">
-          {ordine.map((p, index) => (
-        <div key={index} className="prodotto-carrello">
-          <img src={p.immaggine} alt={p.nome} />
-          <div className="dettagli-prodotto">
-            <h2>{p.nome}</h2>
-            <p>Quantità: {p.selectedQuantity}</p>
-            <p>Unità: {p.selectedUnit}</p>
-            <p>Prezzo: €{calcolaPrezzo(p).toFixed(2)}</p>
-            {p.giacotto && <p>Già cotto (+4€)</p>}
-          </div>
 
-          {/* 🔹 Cestino per rimuovere prodotto */}
-          <FaTrash
-            size={20}
-            color="#ff4d4d"
-            className="icon-trash"
-            onClick={() => rimuoviProdotto(index)}
-            style={{ cursor: "pointer", marginLeft: "10px" }}
-          />
-        </div>
-      ))}
-       </div>
-    
+      <div className="carrello-wrapper">
+        {ordine.map((p, index) => (
+          <div key={index} className="prodotto-carrello">
+            <img src={p.immaggine || "/placeholder.png"} alt={p.nome} />
+            <div className="dettagli-prodotto">
+              <h2>{p.nome}</h2>
+              <p>Quantità: {p.selectedQuantity || "N/A"}</p>
+              <p>Unità: {p.selectedUnit || "pz"}</p>
+              <p>Prezzo: €{calcolaPrezzo(p).toFixed(2)}</p>
+
+              {p.cotto ? (
+                <p style={{ color: "lightgreen" }}>Prodotto già cotto</p>
+              ) : p.giacotto ? (
+                <p>Già cotto (+4€/kg)</p>
+              ) : null}
+            </div>
+
+            <FaTrash
+              size={20}
+              color="#ff4d4d"
+              className="icon-trash"
+              onClick={() => rimuoviProdotto(index)}
+              style={{ cursor: "pointer", marginLeft: "10px" }}
+            />
+          </div>
+        ))}
+      </div>
 
       <button className="btn-riepilogo" onClick={() => setRiepilogoOpen(!riepilogoOpen)}>
         <FaShoppingCart /> Riepilogo
@@ -235,7 +251,7 @@ export default function Carrello({ selectedProduct, setSelectedProduct, count, s
           {domicilio && (
             <>
               <p className="variazione-domicilio">
-                Per il domicilio il prezzo totale subirà una variazione da 1 a 5 € in base alla zona
+                Il prezzo potrà variare di 1-5€ in base alla zona di consegna.
               </p>
               <input type="text" placeholder="Indirizzo" value={indirizzo} onChange={(e) => setIndirizzo(e.target.value)} />
               <input type="text" placeholder="Provincia" value={provincia} onChange={(e) => setProvincia(e.target.value)} />

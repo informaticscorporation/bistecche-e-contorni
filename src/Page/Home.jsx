@@ -157,8 +157,8 @@ export default function Home({ count }) {
           <GiForkKnifeSpoon className="category-icon" /> Gastronomia e Contorni
         </button>
         <button
-          className={`category ${categories === "vini" ? "active" : ""}`}
-          onClick={() => setCategories("vini")}
+          className={`category ${categories === "wine" ? "active" : ""}`}
+          onClick={() => setCategories("wine")}
         >
           <GiWineBottle className="category-icon" /> Vini
         </button>

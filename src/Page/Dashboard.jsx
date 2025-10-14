@@ -205,7 +205,7 @@ export default function Dashboard() {
             <option value="salumi">Salumi</option>
             <option value="formaggi">Formaggi</option>
             <option value="gastronomia">Gastronomia e Contorni</option>
-            <option value="frutta">vini</option>
+            <option value="wine">vini</option>
           </select>
           <input type="text" placeholder="Ingredienti" value={newProdotto.ingredienti} onChange={(e) => setNewProdotto({ ...newProdotto, ingredienti: e.target.value })} />
           <label>
