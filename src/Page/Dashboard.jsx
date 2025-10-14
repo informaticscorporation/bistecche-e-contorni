@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
+import { FaFilter } from "react-icons/fa";
 
 export default function Dashboard() {
   const [prodotti, setProdotti] = useState([]);
@@ -12,10 +13,19 @@ export default function Dashboard() {
     ingredienti: "",
     cotto: false,
     immaggine: "",
-    rating : 0
+    rating: 0
   });
   const [editingProdotto, setEditingProdotto] = useState(null);
   const [intervalTime] = useState(10000); // refresh ogni 10s
+
+  // FILTRI
+  const [showFilters, setShowFilters] = useState(false); // visibilità filtri
+  const [filterProdottoCategoria, setFilterProdottoCategoria] = useState("");
+  const [filterOrdineDomicilio, setFilterOrdineDomicilio] = useState("");
+  const [filterOrdineData, setFilterOrdineData] = useState("");
+
+  const categorieProdotti = ["", "preparati", "suino", "bovino", "pollo", "salumi", "formaggi", "gastronomia", "wine"];
+  const domicilioOptions = ["", "si", "no"];
 
   // --- FETCH PRODOTTI ---
   useEffect(() => {
@@ -93,7 +103,7 @@ export default function Dashboard() {
       ingredienti: "",
       cotto: false,
       immaggine: "",
-      rating : 0
+      rating: 0
     });
 
     const { data } = await supabase.from("Prodotti").select("*");
@@ -125,9 +135,53 @@ export default function Dashboard() {
     setOrdini(ordini.filter((o) => o.id !== id));
   };
 
+  // --- FILTRI APPLICATI ---
+  const filteredProdotti = prodotti.filter(p =>
+    (!filterProdottoCategoria || p.categoria === filterProdottoCategoria)
+  );
+
+  const filteredOrdini = ordini.filter(o =>
+    (!filterOrdineDomicilio || o.domicilio === (filterOrdineDomicilio === "si")) &&
+    (!filterOrdineData || o.data === filterOrdineData)
+  );
+
   return (
     <div className="dashboard">
       <h1>Dashboard Amministratore</h1>
+
+      {/* --- TOGGLE FILTRI --- */}
+      <div style={{ cursor: "pointer", marginBottom: "10px" }} onClick={() => setShowFilters(!showFilters)}>
+        <FaFilter /> Filtri
+      </div>
+
+      {showFilters && (
+        <>
+          {/* Filtri Prodotti */}
+          <section className="section">
+            <h2>Filtri Prodotti</h2>
+            <select value={filterProdottoCategoria} onChange={(e) => setFilterProdottoCategoria(e.target.value)}>
+              {categorieProdotti.map(cat => (
+                <option key={cat} value={cat}>
+                  {cat === "" ? "Tutte le categorie" : cat.charAt(0).toUpperCase() + cat.slice(1)}
+                </option>
+              ))}
+            </select>
+          </section>
+
+          {/* Filtri Ordini */}
+          <section className="section">
+            <h2>Filtri Ordini</h2>
+            <select value={filterOrdineDomicilio} onChange={(e) => setFilterOrdineDomicilio(e.target.value)}>
+              {domicilioOptions.map(opt => (
+                <option key={opt} value={opt}>
+                  {opt === "" ? "Tutti" : opt === "si" ? "Domicilio Si" : "Domicilio No"}
+                </option>
+              ))}
+            </select>
+            <input type="date" value={filterOrdineData} onChange={(e) => setFilterOrdineData(e.target.value)} />
+          </section>
+        </>
+      )}
 
       {/* --- SEZIONE ORDINI --- */}
       <section className="section">
@@ -151,8 +205,8 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {ordini.length > 0 ? (
-                ordini.map((ordine) => (
+              {filteredOrdini.length > 0 ? (
+                filteredOrdini.map((ordine) => (
                   <tr key={ordine.id}>
                     <td>{ordine.nome}</td>
                     <td>{ordine.cognome}</td>
@@ -172,9 +226,7 @@ export default function Dashboard() {
                     <td>{ordine.data}</td>
                     <td>{ordine.ora}</td>
                     <td>
-                      <button className="btn-delete" onClick={() => handleDeleteOrdine(ordine.id)}>
-                        Elimina
-                      </button>
+                      <button className="btn-delete" onClick={() => handleDeleteOrdine(ordine.id)}>Elimina</button>
                     </td>
                   </tr>
                 ))
@@ -198,14 +250,9 @@ export default function Dashboard() {
           <input type="number" placeholder="Prezzo (€)" value={newProdotto.prezzo} onChange={(e) => setNewProdotto({ ...newProdotto, prezzo: e.target.value })} />
           <select value={newProdotto.categoria} onChange={(e) => setNewProdotto({ ...newProdotto, categoria: e.target.value })}>
             <option value="">Seleziona Categoria</option>
-            <option value="preparati">Preparati</option>
-            <option value="suino">Suino</option>
-            <option value="bovino">Bovino</option>
-            <option value="pollo">Pollo</option>
-            <option value="salumi">Salumi</option>
-            <option value="formaggi">Formaggi</option>
-            <option value="gastronomia">Gastronomia e Contorni</option>
-            <option value="wine">vini</option>
+            {categorieProdotti.slice(1).map(cat => (
+              <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
+            ))}
           </select>
           <input type="text" placeholder="Ingredienti" value={newProdotto.ingredienti} onChange={(e) => setNewProdotto({ ...newProdotto, ingredienti: e.target.value })} />
           <label>
@@ -234,73 +281,34 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {prodotti.length > 0 ? (
-                prodotti.map((p) => (
+              {filteredProdotti.length > 0 ? (
+                filteredProdotti.map((p) => (
                   <tr key={p.id}>
-                    <td>
-                      {editingProdotto?.id === p.id ? (
-                        <input value={editingProdotto.nome} onChange={(e) => setEditingProdotto({ ...editingProdotto, nome: e.target.value })} />
-                      ) : p.nome}
-                    </td>
-                    <td>
-                      {editingProdotto?.id === p.id ? (
-                        <input type="number" value={editingProdotto.prezzo} onChange={(e) => setEditingProdotto({ ...editingProdotto, prezzo: e.target.value })} />
-                      ) : p.prezzo}
-                    </td>
-                    <td>
-                      {editingProdotto?.id === p.id ? (
-                        <select value={editingProdotto.categoria} onChange={(e) => setEditingProdotto({ ...editingProdotto, categoria: e.target.value })}>
-                          <option value="preparati">Preparati</option>
-                          <option value="suino">Suino</option>
-                          <option value="bovino">Bovino</option>
-                          <option value="pollo">Pollo</option>
-                          <option value="salumi">Salumi</option>
-                          <option value="formaggi">Formaggi</option>
-                          <option value="gastronomia">Gastronomia e Contorni</option>
-                          <option value="wine">Vini</option>
-                        </select>
-                      ) : p.categoria}
-                    </td>
-                    <td>
-                      {editingProdotto?.id === p.id ? (
-                        <input type="text" value={editingProdotto.ingredienti} onChange={(e) => setEditingProdotto({ ...editingProdotto, ingredienti: e.target.value })} />
-                      ) : p.ingredienti}
-                    </td>
-                    <td>
-                      {editingProdotto?.id === p.id ? (
-                        <input type="checkbox" checked={editingProdotto.cotto} onChange={(e) => setEditingProdotto({ ...editingProdotto, cotto: e.target.checked })} />
-                      ) : p.cotto ? "✅" : "❌"}
-                    </td>
-                    <td>
-                      {editingProdotto?.id === p.id ? (
-                        <>
-                          <input type="file" onChange={(e) => handleUploadImage(e.target.files[0], true)} />
-                          {editingProdotto.immaggine && <img src={editingProdotto.immaggine} alt={editingProdotto.nome} width="60" height="60" />}
-                        </>
-                      ) : p.immaggine ? (
-                        <img src={p.immaggine} alt={p.nome} width="60" height="60" />
-                      ) : null}
-                    </td>
-                    <td>
-                      {editingProdotto?.id === p.id ? (
-                        <input type="number" value={editingProdotto.rating} onChange={(e) => setEditingProdotto({ ...editingProdotto, rating: e.target.value })} />
-                      ) : p.rating}
-                    </td>
-                    <td>
-                      {editingProdotto?.id === p.id ? (
-                        <button className="btn-save" onClick={() => handleEditProdotto(p.id)}>Salva</button>
-                      ) : (
-                        <>
-                          <button className="btn-edit" onClick={() => setEditingProdotto(p)}>Modifica</button>
-                          <button className="btn-delete" onClick={() => handleDeleteProdotto(p.id)}>Elimina</button>
-                        </>
-                      )}
-                    </td>
+                    <td>{editingProdotto?.id === p.id ? <input value={editingProdotto.nome} onChange={(e) => setEditingProdotto({ ...editingProdotto, nome: e.target.value })} /> : p.nome}</td>
+                    <td>{editingProdotto?.id === p.id ? <input type="number" value={editingProdotto.prezzo} onChange={(e) => setEditingProdotto({ ...editingProdotto, prezzo: e.target.value })} /> : p.prezzo}</td>
+                    <td>{editingProdotto?.id === p.id ? (
+                      <select value={editingProdotto.categoria} onChange={(e) => setEditingProdotto({ ...editingProdotto, categoria: e.target.value })}>
+                        {categorieProdotti.slice(1).map(cat => <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>)}
+                      </select>
+                    ) : p.categoria}</td>
+                    <td>{editingProdotto?.id === p.id ? <input type="text" value={editingProdotto.ingredienti} onChange={(e) => setEditingProdotto({ ...editingProdotto, ingredienti: e.target.value })} /> : p.ingredienti}</td>
+                    <td>{editingProdotto?.id === p.id ? <input type="checkbox" checked={editingProdotto.cotto} onChange={(e) => setEditingProdotto({ ...editingProdotto, cotto: e.target.checked })} /> : p.cotto ? "✅" : "❌"}</td>
+                    <td>{editingProdotto?.id === p.id ? (
+                      <>
+                        <input type="file" onChange={(e) => handleUploadImage(e.target.files[0], true)} />
+                        {editingProdotto.immaggine && <img src={editingProdotto.immaggine} alt={editingProdotto.nome} width="60" height="60" />}
+                      </>
+                    ) : p.immaggine ? <img src={p.immaggine} alt={p.nome} width="60" height="60" /> : null}</td>
+                    <td>{editingProdotto?.id === p.id ? <input type="number" value={editingProdotto.rating} onChange={(e) => setEditingProdotto({ ...editingProdotto, rating: e.target.value })} /> : p.rating}</td>
+                    <td>{editingProdotto?.id === p.id ? <button className="btn-save" onClick={() => handleEditProdotto(p.id)}>Salva</button> : <>
+                      <button className="btn-edit" onClick={() => setEditingProdotto(p)}>Modifica</button>
+                      <button className="btn-delete" onClick={() => handleDeleteProdotto(p.id)}>Elimina</button>
+                    </>}</td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="7">Nessun prodotto presente</td>
+                  <td colSpan="8">Nessun prodotto presente</td>
                 </tr>
               )}
             </tbody>
