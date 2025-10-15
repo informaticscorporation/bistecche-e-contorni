@@ -5,35 +5,37 @@
     <link rel="icon" type="image/webp" href="/logo.webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Bistecche e Contorni</title>
-    <meta name="description" content="Macelleria e gastronomia a Villagrazia di Carini (PA). Carne fresca, bistecche, salumi e specialità gastronomiche locali. Vieni a trovarci in via [inserisci indirizzo]." />
-    <meta name="keywords" content="macelleria Carini, gastronomia Carini, carne fresca Villagrazia, bistecche PA, salumi Carini, specialità gastronomiche Sicilia" />
+    <title>Bistecche e Contorni | Macelleria e Gastronomia a Villagrazia di Carini (PA)</title>
+
+    <!-- Meta SEO -->
+    <meta name="description" content="Bistecche e Contorni, macelleria e gastronomia a Villagrazia di Carini (PA). Carne fresca, salumi, involtini, porchetta, rosbif, pollo allo spiedo e specialità gastronomiche locali." />
+    <meta name="keywords" content="macelleria Carini, gastronomia Carini, carne fresca Villagrazia, bistecche PA, salumi Carini, involtini, porchetta, rosbif, pollo allo spiedo, specialità gastronomiche Sicilia" />
     <meta name="robots" content="index, follow" />
 
-    <!-- Open Graph per condivisione sui social -->
-    <meta property="og:title" content="Macelleria e Gastronomia a Villagrazia di Carini | Bistecche e Contorni" />
-    <meta property="og:description" content="Carne fresca, bistecche, salumi e specialità gastronomiche locali. Visita la nostra macelleria a Villagrazia di Carini (PA)." />
-    <meta property="og:image" content="/logo.webp" />
+    <!-- Open Graph per social sharing -->
+    <meta property="og:title" content="Bistecche e Contorni | Macelleria e Gastronomia a Villagrazia di Carini" />
+    <meta property="og:description" content="Carne fresca, salumi, involtini, porchetta, rosbif, pollo allo spiedo e specialità gastronomiche locali. Visita la nostra macelleria a Villagrazia di Carini (PA)." />
+    <meta property="og:image" content="https://www.bisteccheecontorni.it/logo.webp" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.bisteccheecontorni.it/" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Macelleria e Gastronomia a Villagrazia di Carini | Bistecche e Contorni" />
-    <meta name="twitter:description" content="Carne fresca, bistecche, salumi e specialità gastronomiche locali. Visita la nostra macelleria a Villagrazia di Carini (PA)." />
-    <meta name="twitter:image" content="/logo.webp" />
+    <meta name="twitter:title" content="Bistecche e Contorni | Macelleria e Gastronomia a Villagrazia di Carini" />
+    <meta name="twitter:description" content="Carne fresca, salumi, involtini, porchetta, rosbif, pollo allo spiedo e specialità gastronomiche locali. Visita la nostra macelleria a Villagrazia di Carini (PA)." />
+    <meta name="twitter:image" content="https://www.bisteccheecontorni.it/logo.webp" />
 
-    <!-- Schema markup JSON-LD per Google Local SEO -->
+    <!-- JSON-LD Local SEO / Schema.org -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "FoodEstablishment",
       "name": "Bistecche e Contorni",
-      "image": "/logo.webp",
-      "description": "Macelleria e gastronomia a Villagrazia di Carini (PA). Carne fresca, bistecche, salumi e specialità gastronomiche locali.",
+      "image": "https://www.bisteccheecontorni.it/logo.webp",
+      "description": "Macelleria e gastronomia a Villagrazia di Carini (PA). Carne fresca, salumi, involtini, porchetta, rosbif, pollo allo spiedo e specialità gastronomiche locali.",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "Piazza Della Vittoria",
+        "streetAddress": "Piazza Della Vittoria 17",
         "addressLocality": "Villagrazia di Carini",
         "addressRegion": "PA",
         "postalCode": "90044",
@@ -41,9 +43,36 @@
       },
       "telephone": "[Inserisci numero]",
       "url": "https://www.bisteccheecontorni.it/",
-      "servesCuisine": ["Macelleria", "Gastronomia"]
+      "servesCuisine": ["Macelleria", "Gastronomia"],
+      "menu": "https://www.bisteccheecontorni.it/menu",
+      "hasMenu": {
+        "@type": "Menu",
+        "name": "Prodotti e Specialità",
+        "url": "https://www.bisteccheecontorni.it/menu",
+        "hasMenuSection": [
+          {
+            "@type": "MenuSection",
+            "name": "Carne Fresca",
+            "hasMenuItem": [
+              {"@type": "MenuItem", "name": "Bistecche"},
+              {"@type": "MenuItem", "name": "Salumi"},
+              {"@type": "MenuItem", "name": "Involtini"}
+            ]
+          },
+          {
+            "@type": "MenuSection",
+            "name": "Prodotti Cotti",
+            "hasMenuItem": [
+              {"@type": "MenuItem", "name": "Porchetta"},
+              {"@type": "MenuItem", "name": "Rosbif"},
+              {"@type": "MenuItem", "name": "Pollo allo spiedo"}
+            ]
+          }
+        ]
+      }
     }
     </script>
+
   </head>
   <body>
     <div id="root"></div>
