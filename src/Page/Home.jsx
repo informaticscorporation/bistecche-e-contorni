@@ -9,7 +9,7 @@ import {
   GiHamShank,
   GiCheeseWedge,
   GiForkKnifeSpoon,
-  GiWineBottle
+  GiWineBottle,
 } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 
@@ -66,7 +66,9 @@ export default function Home({ count }) {
 
   // 🔄 Se l’utente scrive qualcosa, mostriamo i risultati della ricerca
   const selectedProducts =
-    searchTerm.trim().length > 0 ? SearchResults : getSelectedCategoryProducts();
+    searchTerm.trim().length > 0
+      ? SearchResults
+      : getSelectedCategoryProducts();
 
   // ⭐ Funzione per aggiungere un voto
   const handleRate = async (productId, currentRating) => {
@@ -79,9 +81,7 @@ export default function Home({ count }) {
 
     if (!error) {
       setProducts((prev) =>
-        prev.map((p) =>
-          p.id === productId ? { ...p, rating: newRating } : p
-        )
+        prev.map((p) => (p.id === productId ? { ...p, rating: newRating } : p))
       );
       setRatedProducts((prev) => [...prev, productId]);
     }
@@ -91,8 +91,14 @@ export default function Home({ count }) {
     <div className="home">
       {/* Header */}
       <div className="header">
-        <h1 style={{position: "absolute",zIndex: -1000}}>Bistecche e Contorni | Carne Fresca e Specialità Locali a Villagrazia di Carini palermo</h1>
-        <p style={{position: "absolute",zIndex: -1000}}>Offriamo carne fresca, salumi artigianali, involtini, porchetta, rosbif, pollo allo spiedo e altre specialità gastronomiche locali</p>
+        <h1 style={{ position: "absolute", zIndex: -1000 }}>
+          Bistecche e Contorni | Carne Fresca e Specialità Locali a Villagrazia
+          di Carini palermo
+        </h1>
+        <p style={{ position: "absolute", zIndex: -1000 }}>
+          Offriamo carne fresca, salumi artigianali, involtini, porchetta,
+          rosbif, pollo allo spiedo e altre specialità gastronomiche locali
+        </p>
         {badge && <div className="badge">{count}</div>}
         <FaShoppingCart
           className="cart-icon"
@@ -151,9 +157,7 @@ export default function Home({ count }) {
           <GiCheeseWedge className="category-icon" /> Formaggi
         </button>
         <button
-          className={`category ${
-            categories === "gastronomia" ? "active" : ""
-          }`}
+          className={`category ${categories === "gastronomia" ? "active" : ""}`}
           onClick={() => setCategories("gastronomia")}
         >
           <GiForkKnifeSpoon className="category-icon" /> Gastronomia e Contorni
@@ -190,7 +194,7 @@ export default function Home({ count }) {
                   </div>
                 </div>
                 <h3 className="name">{product.nome}</h3>
-               
+
                 <p className="price">€{Number(product.prezzo).toFixed(2)}</p>
                 <div>
                   <button
@@ -254,6 +258,53 @@ export default function Home({ count }) {
           )}
         </div>
       </div>
+    <footer
+      style={{
+        backgroundColor: "#000",
+        color: "#fff",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "20px",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      <div style={{ marginBottom: "10px", textAlign: "center" }}>
+        <p style={{ margin: 0 }}>Bistecche&amp;Contorni© 2023 - All rights reserved</p>
+        <p style={{ margin: 0 }}>
+          P.IVA 07082100822 - PIAZZA DELLA VITTORIA 17 - 90044 - CARINI (PA) - Tel. +39 091 737 8089
+        </p>
+      </div>
+
+      <div style={{ display: "flex", gap: "15px", marginBottom: "10px" }}>
+        <a
+          href="https://www.iubenda.com/privacy-policy/26235603"
+          className="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe"
+          title="Privacy Policy"
+          style={{ color: "#fff", textDecoration: "none" }}
+        >
+          Privacy Policy
+        </a>
+        <a
+          href="https://www.iubenda.com/privacy-policy/26235603/cookie-policy"
+          className="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe"
+          title="Cookie Policy"
+          style={{ color: "#fff", textDecoration: "none" }}
+        >
+          Cookie Policy
+        </a>
+      </div>
+
+      <div>
+        <a
+          href="https://informatics-corporation.it"
+          style={{ color: "#fff", textDecoration: "none" }}
+        >
+          Realizzato da INFORMATICS CORPORATION
+        </a>
+      </div>
+    </footer>
     </div>
   );
 }
