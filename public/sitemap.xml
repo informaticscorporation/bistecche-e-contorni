@@ -1,16 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-   <url>
-      <loc>https://www.bisteccheecontorni.it/prodotto/a7c3a029-f268-499d-847b-204fe6f91a12</loc>
-      <lastmod>2025-10-15</lastmod>
-      <changefreq>daily</changefreq>
-      <priority>1.0</priority>
-   </url>
+
+   <!-- Homepage -->
    <url>
       <loc>https://www.bisteccheecontorni.it/</loc>
-      <lastmod>2025-10-15</lastmod>
+      <lastmod>2025-10-17</lastmod>
       <changefreq>daily</changefreq>
       <priority>1.0</priority>
    </url>
-   
+
+   <!-- Prodotti dal CSV -->
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/009f5b58-b8f0-4a77-9d9f-b87e499d2cb4</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/11f49bf3-65e8-4040-91b0-7665668bca9f</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/15866c98-79ae-431e-be91-1865c85cbed5</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/174efafb-5cdd-432d-b062-494a0ca6a3e6</loc><lastmod>2025-10-17</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/18cd2586-0ec5-458d-bea2-50dd0e8b60cc</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/1a7c1ef0-dd57-4b3c-824d-36126fbf895a</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/26d170bf-1411-4676-b90d-768fe4151857</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/28eb02e5-56f5-430d-876b-2999668f598e</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/2fa3f21f-27f1-4b0a-b10a-f93614f65887</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/3ea086d1-35a0-4534-8595-5b89cab2b61e</loc><lastmod>2025-10-17</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/4a2b6092-2e72-426b-a264-016575a96d3b</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/4e2fab24-888a-44d5-a80b-67623bdc6b33</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/4fd06710-7eb4-4a09-a570-8f81898a4b57</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/5e310ddc-cf2b-4ba4-b4f2-656813bddbe8</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/6fe3e3ff-10c4-47c1-9c7c-71b761df97b0</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/713b24fe-8acf-43f0-8c41-b1653ef3f916</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/729834e2-5363-402d-bdc5-ed6c5fd533c0</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/7642108d-761e-4a1b-a275-73fe5fee91b1</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/769fb82b-1744-442a-ad72-4e73968da445</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/7fc7f77e-380d-47f8-8d10-55602a00f732</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/88505eab-7d12-48c6-8bb7-314685b35e7f</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/8cef3e72-3f8c-4eba-ae32-bc3ac46bd5ce</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/8ea335f2-2d0a-4fa8-afd9-31d3faeaedd0</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/9d7ddb2b-3934-4ddf-a907-b0067186f1fb</loc><lastmod>2025-10-17</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/9f48bdcd-de8c-4555-adb3-913191a5b116</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/a2fd0915-abc1-4ebb-ab61-ee0c7e8aaaf9</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/a5d756a5-e89b-4591-baca-401959a35690</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/a7c3a029-f268-499d-847b-204fe6f91a12</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/a89dd42b-ecab-4d01-bfc8-b56762a79753</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/aa06e71a-c3af-44fc-be39-bf2625211af7</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/b2dc3b0d-2b39-43ca-8deb-2fb558ef026f</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/b4e20298-ef34-442a-ba0d-94f7c7a5c697</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/bc24174d-40a4-4411-b579-c67075e04781</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/c94a88b6-e5ac-4bc4-940e-c7456f1e5e23</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/cbdd9b46-6cf2-40f6-a799-a11062c103dc</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/cc475259-f7ad-46d2-bdf7-9e69aea299ea</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/d14e86b3-909c-4f2e-8402-4951038a3563</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/dc1bf29a-29bd-4738-94b0-9592e4191f75</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/e2b6deac-778e-4dc9-b990-3724b4caa7b9</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/e6266e01-4765-4aea-94c1-04a523acd07b</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/fa059eb6-f05d-4832-a29c-865e062a2214</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/fd14be2c-7c09-40ef-b252-67566319e899</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+   <url><loc>https://www.bisteccheecontorni.it/prodotto/fecf1fbb-d4be-4fb1-8033-50c7b2154e38</loc><lastmod>2025-10-17</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+
 </urlset>
