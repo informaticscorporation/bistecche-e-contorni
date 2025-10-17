@@ -98,6 +98,7 @@ export default function Home({ count }) {
           onClick={() => navigate("/carrello")}
         />
         <img src="/logo.webp" alt="Marina del Re" className="logo" />
+        <h1>Bistecche e Contorni</h1>
         <div className="spacer" />
       </div>
 
@@ -110,7 +111,7 @@ export default function Home({ count }) {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-
+      
       {/* Categories */}
       <div className="categories">
         <button
@@ -209,7 +210,7 @@ export default function Home({ count }) {
           <h2>
             {searchTerm.trim().length > 0
               ? `Risultati per "${searchTerm}"`
-              : categories.charAt(0).toUpperCase() + categories.slice(1)}
+              : categories==="gastronomia" ? "Gastronomia e Contorni" : categories === "wine" ? "Vini locali" : categories === "formaggi" ? "Formaggi " : categories === "salumi" ? "Salumi" : categories === "pollo" ? "Pollo" : categories === "bovino" ? "Bovino" : categories === "suino" ? "Suino" : "Preparati"}
           </h2>
           <span>Vedi Tutto →</span>
         </div>
