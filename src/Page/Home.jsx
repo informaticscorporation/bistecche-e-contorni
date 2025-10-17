@@ -36,7 +36,7 @@ export default function Home({ count }) {
     setInterval(() => {
       fetchPopolari();
     }, 5000);
-    clearInterval();
+    clearInterval( fetchPopolari());
   }, []);
 
   // 🔹 Caricamento prodotti
@@ -91,14 +91,7 @@ export default function Home({ count }) {
     <div className="home">
       {/* Header */}
       <div className="header">
-        <h1 style={{ position: "absolute", zIndex: -1000 }}>
-          Bistecche e Contorni | Carne Fresca e Specialità Locali a Villagrazia
-          di Carini palermo
-        </h1>
-        <p style={{ position: "absolute", zIndex: -1000 }}>
-          Offriamo carne fresca, salumi artigianali, involtini, porchetta,
-          rosbif, pollo allo spiedo e altre specialità gastronomiche locali
-        </p>
+      
         {badge && <div className="badge">{count}</div>}
         <FaShoppingCart
           className="cart-icon"
