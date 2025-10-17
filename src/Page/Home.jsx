@@ -97,8 +97,11 @@ export default function Home({ count }) {
           className="cart-icon"
           onClick={() => navigate("/carrello")}
         />
-        <img src="/logo.webp" alt="Marina del Re" className="logo" />
-        <h1>Bistecche e Contorni</h1>
+        <div style={{display:"flex", alignItems:"center", justifyContent:"center",flexDirection:"column"}}>
+           <img src="/logo.webp" alt="Marina del Re" className="logo" />
+        <h1 className="title">Bistecche e Contorni</h1>
+        </div>
+       
         <div className="spacer" />
       </div>
 
